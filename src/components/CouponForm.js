@@ -81,7 +81,7 @@ const CouponForm = () => {
 
         console.log('Submitting coupon:', coupon);
 
-        axios.post(`https://coupon-code-backend.vercel.app//api/coupons`, { coupon })
+        axios.post(`https://coupon-code-backend.vercel.app/api/coupons`, { coupon })
             .then(response => {
                 alert('Coupon created successfully!');
                 console.log('Response:', response.data);
