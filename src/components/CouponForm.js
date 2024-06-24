@@ -63,8 +63,6 @@ const CouponForm = () => {
         }));
     };
 
-    
-
     const handleSubmit = (e) => {
         e.preventDefault();
         const coupon = {
@@ -83,7 +81,7 @@ const CouponForm = () => {
 
         console.log('Submitting coupon:', coupon);
 
-        axios.post(`${process.env.REACT_APP_API_URL}/api/coupons`, { coupon })  // Use relative path
+        axios.post(`${process.env.REACT_APP_API_URL}/api/coupons`, { coupon })
             .then(response => {
                 alert('Coupon created successfully!');
                 console.log('Response:', response.data);
@@ -134,7 +132,6 @@ const CouponForm = () => {
                             <TextInput label="Success Message" name="successMessage" value={formData.successMessage} onChange={handleChange} />
                         </div>
                     </div>
-                    <h3 className="coupon-rules-title">Coupon Rules</h3>
                     <div className="form-row">
                         <div className="form-group checkbox-group">
                             <CheckboxInput label="Minimum nights in booking" name="minNightBooking" checked={formData.minNightBooking} onChange={handleChange} />
@@ -147,7 +144,7 @@ const CouponForm = () => {
                         </div>
                         <button type="button" onClick={addRule} className="btn btn-secondary add-rule-btn">+</button>
                     </div>
-                   
+                    <h3 className="coupon-rules-title">Coupon Rules</h3>
                     {formData.rules.map((rule, index) => (
                         <RuleForm
                             key={index}
