@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
 import axios from 'axios';
+import React, { useState } from 'react';
 import TextInput from './TextInput';
 import NumberInput from './NumberInput';
 import SelectInput from './SelectInput';
@@ -62,6 +62,9 @@ const CouponForm = () => {
             rules: newRules
         }));
     };
+
+    
+
     const handleSubmit = (e) => {
         e.preventDefault();
         const coupon = {
@@ -78,24 +81,12 @@ const CouponForm = () => {
             }))
         };
 
-        axios.post('/api/coupons', { coupon })
+        console.log('Submitting coupon:', coupon);
+
+        axios.post('http://localhost:3000/api/coupons', { coupon })  // Use relative path
             .then(response => {
                 alert('Coupon created successfully!');
-                setFormData({
-                    name: '',
-                    couponCode: '',
-                    limitPerUser: '',
-                    fareType: 'special_fare',
-                    bookingPortal: '',
-                    discountType: 'flat',
-                    validFrom: '',
-                    validTill: '',
-                    successMessage: '',
-                    minNightBooking: false,
-                    operator: 'in',
-                    value: 1,
-                    rules: []
-                });
+                console.log('Response:', response.data);
             })
             .catch(error => {
                 console.error('There was an error creating the coupon!', error);
@@ -109,30 +100,53 @@ const CouponForm = () => {
                 <h1 className="form-title">Add Coupon</h1>
                 <form onSubmit={handleSubmit} className="coupon-form">
                     <div className="form-row">
-                        <TextInput label="Name" name="name" value={formData.name} onChange={handleChange} />
-                        <TextInput label="Coupon Code" name="couponCode" value={formData.couponCode} onChange={handleChange} />
-                        <NumberInput label="Limit Per User" name="limitPerUser" value={formData.limitPerUser} onChange={handleChange} />
+                        <div className="form-group">
+                            <TextInput label="Name" name="name" value={formData.name} onChange={handleChange} />
+                        </div>
+                        <div className="form-group">
+                            <TextInput label="Coupon Code" name="couponCode" value={formData.couponCode} onChange={handleChange} />
+                        </div>
+                        <div className="form-group">
+                            <NumberInput label="Limit Per User" name="limitPerUser" value={formData.limitPerUser} onChange={handleChange} />
+                        </div>
                     </div>
                     <div className="form-row">
-                        <SelectInput label="Fare Type" name="fareType" value={formData.fareType} options={fareTypes} onChange={handleChange} />
-                        <SelectInput label="Booking Portal" name="bookingPortal" value={formData.bookingPortal} options={bookingPortals} onChange={handleChange} />
+                        <div className="form-group">
+                            <SelectInput label="Fare Type" name="fareType" value={formData.fareType} options={fareTypes} onChange={handleChange} />
+                        </div>
+                        <div className="form-group">
+                            <SelectInput label="Booking Portal" name="bookingPortal" value={formData.bookingPortal} options={bookingPortals} onChange={handleChange} />
+                        </div>
                     </div>
                     <div className="form-row">
-                        <SelectInput label="Discount Type" name="discountType" value={formData.discountType} options={discountTypes} onChange={handleChange} />
+                        <div className="form-group">
+                            <SelectInput label="Discount Type" name="discountType" value={formData.discountType} options={discountTypes} onChange={handleChange} />
+                        </div>
                     </div>
                     <div className="form-row">
-                        <DateInput label="Valid From" name="validFrom" value={formData.validFrom} onChange={handleChange} />
-                        <DateInput label="Valid Till" name="validTill" value={formData.validTill} onChange={handleChange} />
-                        <TextInput label="Success Message" name="successMessage" value={formData.successMessage} onChange={handleChange} />
+                        <div className="form-group">
+                            <DateInput label="Valid From" name="validFrom" value={formData.validFrom} onChange={handleChange} />
+                        </div>
+                        <div className="form-group">
+                            <DateInput label="Valid Till" name="validTill" value={formData.validTill} onChange={handleChange} />
+                        </div>
+                        <div className="form-group">
+                            <TextInput label="Success Message" name="successMessage" value={formData.successMessage} onChange={handleChange} />
+                        </div>
                     </div>
-                    <h3>Coupon Rules</h3>
                     <div className="form-row">
-                        <CheckboxInput label="Minimum nights in booking" name="minNightBooking" checked={formData.minNightBooking} onChange={handleChange} />
-                        <SelectInput label="Operator" name="operator" value={formData.operator} options={['in', 'equals']} onChange={handleChange} />
-                        <NumberInput label="Value" name="value" value={formData.value} onChange={handleChange} />
+                        <div className="form-group checkbox-group">
+                            <CheckboxInput label="Minimum nights in booking" name="minNightBooking" checked={formData.minNightBooking} onChange={handleChange} />
+                        </div>
+                        <div className="form-group">
+                            <SelectInput label="Operator" name="operator" value={formData.operator} options={['in', 'equals']} onChange={handleChange} />
+                        </div>
+                        <div className="form-group">
+                            <NumberInput label="Value" name="value" value={formData.value} onChange={handleChange} />
+                        </div>
                         <button type="button" onClick={addRule} className="btn btn-secondary add-rule-btn">+</button>
                     </div>
-                   
+                    <h3 className="coupon-rules-title">Coupon Rules</h3>
                     {formData.rules.map((rule, index) => (
                         <RuleForm
                             key={index}
